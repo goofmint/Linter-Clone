@@ -1,4 +1,4 @@
-{
+[{
   "name": "express",
   "description": "Sinatra inspired web development framework",
   "version": "2.5.2",
@@ -257,4 +257,4 @@
 	"engines": {
 		"node": ">=0.3.0"
 	}
-}
+}]
