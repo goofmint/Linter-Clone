@@ -23,7 +23,7 @@ var UrlSchema = new Schema({
     urls: [String]
 });
 mongoose.model('Url', UrlSchema);
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/mongo_data';);
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/mongo_data');
 
 app.enable('jsonp callback');
 app.get('/', function(req, res){
