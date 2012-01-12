@@ -506,7 +506,9 @@ if (typeof ExtractContentJS == 'undefined') {
             node = node ? node : self.toHTML();
             var img = jsdom.jsdom(node.outerHTML);
             if (img && img.images.length > 0) {
-                return A.map(img.images, function(v) { return v.src});
+                return A.map(img.images, function(v) {
+                    return v.src
+                });
             }
             if (node._parentNode) {
                 return self.main_image(jsdom, node._parentNode);

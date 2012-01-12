@@ -5,6 +5,7 @@ var ext = require('./extract-content-all'),
     app = require('express').createServer(),
     mongoose = require('mongoose'),
     Iconv  = require('iconv').Iconv,
+    uri    = require('url'),
     Buffer = require('buffer').Buffer;
 
 // url = 'http://www.aichan.biz/html/html/h.html';
@@ -22,7 +23,7 @@ var UrlSchema = new Schema({
     urls: [String]
 });
 mongoose.model('Url', UrlSchema);
-mongoose.connect('mongodb://localhost/linter');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/mongo_data';);
 
 app.enable('jsonp callback');
 app.get('/', function(req, res){
@@ -30,11 +31,18 @@ app.get('/', function(req, res){
     if (!url.match(/^http.?:\/\/.*/)) {
         return res.json({message: "Not found"+url, status: 404});
     }
+    
     Url = mongoose.model('Url');
     Url.find({url: url}, function (err, docs) {
         if (typeof docs[0] != "undefined") {
-            doc = docs[0];
-            return res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images});
+            if (req.query.refresh == "true") {
+                Url.remove({url: url}, function(err) {
+                    console.log(err);
+                });
+            }else{
+                doc = docs[0];
+                return res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images});
+            }
         }
         request(url, function (error, response, body) {
             if (error || response.statusCode != 200) {
@@ -50,13 +58,26 @@ app.get('/', function(req, res){
             new_url.urls.push(url);
             var images = result.content.main_image(jsdom);
             for (var i = 0; i <= images.length; i++){
-                new_url.images.push(images[i]);
+                if (typeof images[i] != "undefined") {
+                    if (images[i].match(/^http.*?/)) {
+                        image_url = images[i]
+                    }else if (images[i].match(/^\/.*/)) {
+                        url_params = uri.parse(url);
+                        url_params["pathname"] = images[i];
+                        image_url = uri.format(url_params);
+                    }else{
+                        image_url = uri.format(uri.parse(url + images[i]));
+                    }
+                    console.log(image_url);
+                    new_url.images.push(image_url);
+                }
             }
             new_url.save(function(err){
                 if (err) { console.log(err); }
             });
-            res.json({title: result.title, url:url, content:result.content.toString(), images: result.content.main_image(jsdom)});
+            doc = new_url;
+            res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images});
         });
     });
 });
-app.listen(3000);
+app.listen(9000);
