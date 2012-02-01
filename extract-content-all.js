@@ -509,7 +509,7 @@ if (typeof ExtractContentJS == 'undefined') {
             if (videos && videos.length > 0) {
                 return A.map(videos, function(v) {
                     matches = v.src.match(/http:\/\/www\.youtube\.com\/embed\/(.*)\?.*/);
-                    if (matches.length > 0) {
+                    if (matches && matches.length > 0) {
                         return "http://www.youtube.com/watch?v="+matches[1];
                     }
                 });
