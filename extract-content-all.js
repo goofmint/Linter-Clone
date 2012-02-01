@@ -502,6 +502,19 @@ if (typeof ExtractContentJS == 'undefined') {
         self.toHTML = function() {
             return self.asNode();
         };
+        self.videos = function(jsdom, node){
+            node = node ? node : self.toHTML();
+            var doc = jsdom.jsdom(node.outerHTML);
+            videos = doc.getElementsByTagName("iframe");
+            if (videos && videos.length > 0) {
+                return A.map(videos, function(v) {
+                    matches = v.src.match(/http:\/\/www\.youtube\.com\/embed\/(.*)\?.*/);
+                    if (matches.length > 0) {
+                        return "http://www.youtube.com/watch?v="+matches[1];
+                    }
+                });
+            }
+        },
         self.main_image = function(jsdom, node) {
             node = node ? node : self.toHTML();
             var img = jsdom.jsdom(node.outerHTML);
@@ -607,7 +620,6 @@ if (typeof ExtractContentJS == 'undefined') {
                 form: [ 'form' ],
                 noContent: [ 'frameset' ],
                 ignore: [
-                    'iframe',
                     'script',
                     'style',
                     'select',

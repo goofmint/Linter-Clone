@@ -10,6 +10,7 @@ var ext = require('./extract-content-all'),
 
 // url = 'http://www.aichan.biz/html/html/h.html';
 // url = 'http://d.hatena.ne.jp/hokaccha/20110801/1312216630'
+// url = 'http://d.hatena.ne.jp/hokaccha/20110801/1312216630'
 
 var Schema   = mongoose.Schema;
 var UrlSchema = new Schema({
@@ -41,7 +42,7 @@ app.get('/', function(req, res){
                 });
             }else{
                 doc = docs[0];
-                return res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images});
+                return res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images, videos: doc.videos});
             }
         }
         request(url, function (error, response, body) {
@@ -57,6 +58,7 @@ app.get('/', function(req, res){
             var new_url = new Url({title: result.title, url: url, content:result.content.toString()});
             new_url.urls.push(url);
             var images = result.content.main_image(jsdom);
+            var videos = result.content.videos(jsdom);
             for (var i = 0; i <= images.length; i++){
                 if (typeof images[i] != "undefined") {
                     if (images[i].match(/^http.*?/)) {
@@ -72,13 +74,14 @@ app.get('/', function(req, res){
                     new_url.images.push(image_url);
                 }
             }
+            new_url.videos = videos;
             new_url.save(function(err){
                 if (err) { console.log(err); }
             });
             doc = new_url;
-            res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images});
+            res.json({title: doc.title, url:doc.url, content:doc.content, images: doc.images, videos: doc.videos});
         });
     });
 });
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 9000;
 app.listen(port);
