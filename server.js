@@ -4,7 +4,7 @@ var ext = require('./extract-content-all'),
     jsdom = require('jsdom'),
     app = require('express').createServer(),
     mongoose = require('mongoose'),
-    Iconv  = require('iconv').Iconv,
+    Iconv  = require('iconv-jp').Iconv,
     uri    = require('url'),
     Buffer = require('buffer').Buffer;
 
