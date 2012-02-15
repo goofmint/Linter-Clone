@@ -59,6 +59,9 @@ app.get('/', function(req, res){
             new_url.urls.push(url);
             var images = result.content.main_image(jsdom);
             var videos = result.content.videos(jsdom);
+            if (result.image) {
+                new_url.images.push(result.image);
+            }
             for (var i = 0; i <= images.length; i++){
                 if (typeof images[i] != "undefined") {
                     if (images[i].match(/^http.*?/)) {

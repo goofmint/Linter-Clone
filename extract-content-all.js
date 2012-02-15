@@ -519,9 +519,16 @@ if (typeof ExtractContentJS == 'undefined') {
             node = node ? node : self.toHTML();
             var img = jsdom.jsdom(node.outerHTML);
             if (img && img.images.length > 0) {
-                return A.map(img.images, function(v) {
-                    return v.src
+                images = new Array;
+                images = A.map(img.images, function(v) {
+                    if (v.src.match(/\/ads\//)) {
+                    }else{
+                        return v.src;
+                    }
                 });
+                if (images.length > 0) {
+                    return images;
+                }
             }
             if (node._parentNode) {
                 return self.main_image(jsdom, node._parentNode);
@@ -553,10 +560,27 @@ if (typeof ExtractContentJS == 'undefined') {
         self.filterFor = function(url) {
             // TODO
         };
-
+        
+        self.meta_value = function(d, name) {
+            metas = d.getElementsByTagName("meta");
+            if (metas && metas.length > 0) {
+            }else{
+                return null;
+            }
+            for (i = 0; i < metas.length; i++) {
+                if (metas[i].name == name) {
+                    return metas[i].content;
+                }
+            }
+            return null;
+        };
         self.extract = function(d) {
             var url = d.location.href;
-            var res = { title: d.title, url: d.location.href };
+            title = self.meta_value(d, "og:title") ? meta_value(d, "og:title") : d.title;
+            url   = self.meta_value(d, "og:url") ? meta_value(d, "og:url") : d.location.href;
+            image = self.meta_value(d, "og:image");
+            description = self.meta_value(d, "og:description");
+            var res = { title: title, url: d.location.href, image: image, description: description};
             var len = self.handler.length;
             for (var i=0; i < len; i++) {
                 var content = self.handler[i].extract(d, url, res);
@@ -587,7 +611,7 @@ if (typeof ExtractContentJS == 'undefined') {
             content: [],
             opt: Util.inherit(arguments[0], {
                 threshold: 60,
-                minLength: 30,
+                minLength: 50,
                 factor: {
                     decay:      0.75,
                     noBody:     0.72,
