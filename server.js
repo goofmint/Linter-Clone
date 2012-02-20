@@ -8,6 +8,8 @@ var ext = require('./extract-content-all'),
     uri    = require('url'),
     Buffer = require('buffer').Buffer;
 
+// 修正する
+
 // url = 'http://www.aichan.biz/html/html/h.html';
 // url = 'http://d.hatena.ne.jp/hokaccha/20110801/1312216630'
 // url = 'http://d.hatena.ne.jp/hokaccha/20110801/1312216630'
