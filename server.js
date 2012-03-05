@@ -57,7 +57,8 @@ app.get('/', function(req, res){
             document.location.href = url;
             ex.addHandler(ex.factory.getHandler('Heuristics'));
             var result = ex.extract(document, url);
-            var new_url = new Url({title: result.title, url: url, content:result.content.toString()});
+            var content = typeof result.content == "undefined" ? "" : result.content.toString();
+            var new_url = new Url({title: result.title, url: url, content: content});
             new_url.urls.push(url);
             var images = result.content.main_image(jsdom);
             var videos = result.content.videos(jsdom);
