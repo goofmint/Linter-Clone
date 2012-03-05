@@ -60,8 +60,8 @@ app.get('/', function(req, res){
             var content = typeof result.content == "undefined" ? "" : result.content.toString();
             var new_url = new Url({title: result.title, url: url, content: content});
             new_url.urls.push(url);
-            var images = result.content.main_image(jsdom);
-            var videos = result.content.videos(jsdom);
+            var images = typeof result.content == "undefined" ? [] : result.content.main_image(jsdom);
+            var videos = typeof result.content == "undefined" ? [] : result.content.videos(jsdom);
             if (result.image) {
                 new_url.images.push(result.image);
             }
