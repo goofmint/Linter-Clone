@@ -1,0 +1,6 @@
+2012-03-06 11:15:48,455 TRACE [pool-1-thread-1] c.m.a.AndroDemon [AndroDemon.java:124] initBridge
+2012-03-06 11:15:48,484 TRACE [pool-1-thread-1] c.m.a.AndroDemon [AndroDemon.java:126] create bridge
+2012-03-06 11:15:48,645 TRACE [pool-1-thread-1] c.m.a.AndroDemon [AndroDemon.java:129] bridge is created
+2012-03-06 11:15:48,661 INFO [Device List Monitor] c.m.a.AndroDemon [AndroDemon.java:135] deviceConnected: 5C4CA9CA99FC
+2012-03-06 11:15:48,764 TRACE [Device List Monitor] c.m.a.AndroDemon [AndroDemon.java:147] deviceChanged: 5C4CA9CA99FC - 4
+2012-03-06 11:25:56,502 TRACE [AWT-EventQueue-0] c.m.a.Mediator [Mediator.java:375] stopDemon

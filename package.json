@@ -6,6 +6,7 @@
                   "iconv-jp": "1.1.3",
                   "jsdom": "0.2.10",
                   "mongoose": "2.4.9",
+                  "formidable": "1.0.1",
                   "request": "2.2.9"
   }
 }
